@@ -2,28 +2,57 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Atleta(models.Model):
-    entrenador = models.ForeignKey('Entrenador', on_delete=models.CASCADE)
-    nombre_completo = models.CharField(max_length=100)
-    fecha_nacimiento = models.DateField()
-    cui = models.CharField("CUI o Pasaporte", max_length=20, unique=True)
-    genero = models.CharField(max_length=10, choices=[
+    DISCIPLINAS = (
+        ('combate', 'Combate'),
+        ('poomsae', 'Poomsae'),
+    )
+    GENEROS = (
         ("masculino", "Masculino"),
         ("femenino", "Femenino"),
-    ])
-    cinta = models.CharField(max_length=10, choices=[
+    )
+    CINTAS = (
         ("blanca", "Blanca"),
         ("amarilla", "Amarilla"),
         ("verde", "Verde"),
         ("azul", "Azul"),
         ("roja", "Roja"),
         ("negra", "Negra"),
-    ])
-    categoria = models.CharField(max_length=10, choices=[
+    )
+    CATEGORIAS_COMBATE = (
         ("cadete", "Cadete"),
         ("juvenil", "Juvenil"),
         ("adulto", "Adulto"),
-    ])
-    peso = models.CharField(max_length=10)
+    )
+    CATEGORIAS_POOMSAE = (
+        ("tradicional", "Tradicional"),
+        ("freestyle", "Freestyle"),
+        ("ambas", "Ambas"),
+    )
+
+    entrenador = models.ForeignKey('Entrenador', on_delete=models.CASCADE)
+    disciplina = models.CharField(max_length=10, choices=DISCIPLINAS, default='combate')  # NUEVO
+    nombre_completo = models.CharField(max_length=100)
+    fecha_nacimiento = models.DateField()
+    cui = models.CharField("CUI o Pasaporte", max_length=20, unique=True)
+    genero = models.CharField(max_length=10, choices=GENEROS)
+    cinta = models.CharField(max_length=10, choices=CINTAS)
+
+    # Categoría para combate (opcional si es poomsae)
+    categoria = models.CharField(
+        max_length=10,
+        choices=CATEGORIAS_COMBATE,
+        blank=True, null=True
+    )
+
+    # Peso solo para combate
+    peso = models.CharField(max_length=10, blank=True, null=True)   # MODIFICADO
+
+    # Categoría poomsae
+    categoria_poomsae = models.CharField(
+        max_length=20,
+        choices=CATEGORIAS_POOMSAE,
+        blank=True, null=True
+    )  # NUEVO
 
     def __str__(self):
         return self.nombre_completo

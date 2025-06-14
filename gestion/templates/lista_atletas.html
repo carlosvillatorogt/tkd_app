@@ -21,18 +21,19 @@
           <a href="{% url 'panel_entrenador' %}" class="btn btn-outline-secondary">
             Volver al panel de entrenador
           </a>
-        </div>                    
-
+        </div>  
         <div class="table-responsive">
-          <table class="table table-bordered table-hover align-middle">
+          <table class="table table-bordered table-hover table-sm align-middle">
             <thead class="table-light">
               <tr>
                 <th>Nombre</th>
-                <th>Fecha de nacimiento</th>
+                <th>F. Nac.</th>
                 <th>Género</th>
+                <th>Disc.</th>
                 <th>Cinta</th>
-                <th>Categoría</th>
+                <th>Cat. comb.</th>
                 <th>Peso</th>
+                <th>Cat. poomsae</th>
                 <th class="text-center">Acciones</th>
               </tr>
             </thead>
@@ -40,24 +41,27 @@
               {% for atleta in atletas %}
               <tr>
                 <td>{{ atleta.nombre_completo }}</td>
-                <td>{{ atleta.fecha_nacimiento }}</td>
+                <td>{{ atleta.fecha_nacimiento|date:"d/m/Y" }}</td>
                 <td>{{ atleta.get_genero_display }}</td>
+                <td>{{ atleta.get_disciplina_display }}</td>
                 <td>{{ atleta.get_cinta_display }}</td>
-                <td>{{ atleta.get_categoria_display }}</td>
-                <td>{{ atleta.peso }}</td>
+                <td>{% if atleta.disciplina == "combate" %}{{ atleta.get_categoria_display }}{% else %}&ndash;{% endif %}</td>
+                <td>{% if atleta.disciplina == "combate" %}{{ atleta.peso }}{% else %}&ndash;{% endif %}</td>
+                <td>{% if atleta.disciplina == "poomsae" %}{{ atleta.get_categoria_poomsae_display }}{% else %}&ndash;{% endif %}</td>
                 <td class="text-center">
-                  <a href="{% url 'editar_atleta' atleta.id %}" class="btn btn-sm btn-outline-success me-1">Editar</a>
-                  <a href="{% url 'borrar_atleta' atleta.id %}" class="btn btn-sm btn-outline-danger ms-1">Borrar</a>
+                  <a href="{% url 'editar_atleta' atleta.id %}" class="btn btn-success btn-xs me-1 mb-1">Editar</a>
+                  <a href="{% url 'borrar_atleta' atleta.id %}" class="btn btn-danger btn-xs ms-1 mb-1">Borrar</a>
                 </td>
               </tr>
               {% empty %}
               <tr>
-                <td colspan="7" class="text-center">No tienes atletas registrados aún.</td>
+                <td colspan="9" class="text-center">No tienes atletas registrados aún.</td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
-        </div>
+        </div>          
+              
       </div>
     </div>
   </div>

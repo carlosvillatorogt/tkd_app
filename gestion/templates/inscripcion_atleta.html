@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-
 {% block title %}Inscripción de Atleta{% endblock %}
-
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-8 col-lg-6">
@@ -22,9 +20,44 @@
           </ul>
         </div>
         {% endif %}
+
+        <!-- Datos del entrenador -->
+        <div class="mb-4 card p-3">
+          <strong>Correo electrónico:</strong> {{ entrenador.email }}<br>
+          <strong>Gimnasio:</strong> {{ entrenador.gimnasio }}<br>
+          <strong>Nombre del entrenador:</strong> {{ entrenador.nombre_completo }}<br>
+          <strong>CUI del entrenador:</strong> {{ entrenador.cui }}
+        </div>
+
         <form method="post" autocomplete="off">
           {% csrf_token %}
-          {{ form.as_p }}
+          <div class="mb-3">
+            {{ form.disciplina.label_tag }} {{ form.disciplina }}
+          </div>
+          <div class="mb-3">
+            {{ form.nombre_completo.label_tag }} {{ form.nombre_completo }}
+          </div>
+          <div class="mb-3">
+            {{ form.fecha_nacimiento.label_tag }} {{ form.fecha_nacimiento }}
+          </div>
+          <div class="mb-3">
+            {{ form.cui.label_tag }} {{ form.cui }}
+          </div>
+          <div class="mb-3">
+            {{ form.genero.label_tag }} {{ form.genero }}
+          </div>
+          <div class="mb-3">
+            {{ form.cinta.label_tag }} {{ form.cinta }}
+          </div>
+          <div class="mb-3 campo-combate">
+            {{ form.categoria.label_tag }} {{ form.categoria }}
+          </div>
+          <div class="mb-3 campo-combate">
+            {{ form.peso.label_tag }} {{ form.peso }}
+          </div>
+          <div class="mb-3 campo-poomsae">
+            {{ form.categoria_poomsae.label_tag }} {{ form.categoria_poomsae }}
+          </div>
           <div class="d-grid gap-2 mt-3">
             <button class="btn btn-success btn-lg" type="submit">
               Inscribir atleta
@@ -34,18 +67,20 @@
             <a href="{% url 'panel_entrenador' %}" class="btn btn-outline-secondary btn-lg">
               ⬅️ Volver al Panel de Entrenador
             </a>
-          </div>     
+          </div>
         </form>
       </div>
     </div>
   </div>
 </div>
 <script>
+  // Función para actualizar pesos (tu código original, si aplica)
   const CATEGORIAS_COMBATE = {{ categorias_json| safe }};
   function updatePesos() {
     const categoria = document.getElementById("id_categoria").value;
     const genero = document.getElementById("id_genero").value;
     const pesoSelect = document.getElementById("id_peso");
+    if (!pesoSelect) return;
     pesoSelect.innerHTML = "";
     if (categoria && genero && CATEGORIAS_COMBATE[categoria] && CATEGORIAS_COMBATE[categoria][genero]) {
       CATEGORIAS_COMBATE[categoria][genero].forEach(peso => {
@@ -63,6 +98,32 @@
   }
   document.getElementById("id_categoria").addEventListener("change", updatePesos);
   document.getElementById("id_genero").addEventListener("change", updatePesos);
-</script>
-{% endblock %}
 
+  // FUNCIÓN MEJORADA PARA CAMPOS Y REQUIRED
+  function mostrarCamposPorDisciplina() {
+    var disciplina = document.getElementById('id_disciplina').value;
+    var campoCombate = document.querySelectorAll('.campo-combate');
+    var campoPoomsae = document.querySelectorAll('.campo-poomsae');
+    // Combate
+    campoCombate.forEach(el => {
+      let visibles = (disciplina === 'combate');
+      el.style.display = visibles ? '' : 'none';
+      el.querySelectorAll('select, input').forEach(f => {
+        f.required = visibles;
+      });
+    });
+    // Poomsae
+    campoPoomsae.forEach(el => {
+      let visibles = (disciplina === 'poomsae');
+      el.style.display = visibles ? '' : 'none';
+      el.querySelectorAll('select, input').forEach(f => {
+        f.required = visibles;
+      });
+    });
+  }
+  // Eventos para cambiar los required
+  document.getElementById('id_disciplina').addEventListener('change', mostrarCamposPorDisciplina);
+  window.addEventListener('DOMContentLoaded', mostrarCamposPorDisciplina);
+</script>
+
+{% endblock %}

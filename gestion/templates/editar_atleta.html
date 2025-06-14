@@ -14,9 +14,46 @@
           <strong>Gimnasio:</strong> {{ entrenador.gimnasio }}
         </div>
 
-        <form method="post" autocomplete="off">
+        <form method="post" autocomplete="off" id="formEditarAtleta">
           {% csrf_token %}
-          {{ form.as_p }}
+          <div class="mb-3">
+            {{ form.disciplina.label_tag }}
+            <input type="text" class="form-control"
+              value="{% if form.disciplina.value == 'poomsae' %}Poomsae{% else %}Combate{% endif %}" disabled>
+            <input type="hidden" name="disciplina" value="{{ form.disciplina.value }}">
+          </div>
+
+          <div class="alert alert-warning fw-bold mb-3">
+            <span>¡Atención!</span> Si inscribiste al atleta en la disciplina equivocada, por favor bórralo y vuelve a
+            ingresarlo con la disciplina correcta. No es posible cambiar la disciplina una vez creado el atleta.
+          </div>
+
+          <div class="mb-3">
+            {{ form.nombre_completo.label_tag }} {{ form.nombre_completo }}
+          </div>
+          <div class="mb-3">
+            {{ form.fecha_nacimiento.label_tag }} {{ form.fecha_nacimiento }}
+          </div>
+          <div class="mb-3">
+            {{ form.cui.label_tag }} {{ form.cui }}
+          </div>
+          <div class="mb-3">
+            {{ form.genero.label_tag }} {{ form.genero }}
+          </div>
+          <div class="mb-3">
+            {{ form.cinta.label_tag }} {{ form.cinta }}
+          </div>
+          <!-- Campos de combate -->
+          <div class="mb-3 campo-combate">
+            {{ form.categoria.label_tag }} {{ form.categoria }}
+          </div>
+          <div class="mb-3 campo-combate">
+            {{ form.peso.label_tag }} {{ form.peso }}
+          </div>
+          <!-- Campo de poomsae -->
+          <div class="mb-3 campo-poomsae">
+            {{ form.categoria_poomsae.label_tag }} {{ form.categoria_poomsae }}
+          </div>
           <div class="d-grid gap-2 mt-3">
             <button type="submit" class="btn btn-success">
               Guardar cambios
@@ -31,4 +68,49 @@
     </div>
   </div>
 </div>
+<script>
+  // ========== Lógica para mostrar/ocultar campos según disciplina ==========
+  function mostrarCamposPorDisciplinaEditar() {
+    var disciplina = "{{ form.disciplina.value }}";
+    document.querySelectorAll('.campo-combate').forEach(function (el) {
+      el.style.display = (disciplina === 'combate') ? '' : 'none';
+    });
+    document.querySelectorAll('.campo-poomsae').forEach(function (el) {
+      el.style.display = (disciplina === 'poomsae') ? '' : 'none';
+    });
+  }
+  document.addEventListener('DOMContentLoaded', mostrarCamposPorDisciplinaEditar);
+
+  // ========== Lógica de pesos dinámicos para COMBATE ==========
+  // Solo ejecuta esto si es de combate
+  {% if form.disciplina.value == 'combate' %}
+  const CATEGORIAS_COMBATE = {{ categorias_json| safe }};
+  function updatePesos() {
+    const categoria = document.getElementById("id_categoria").value;
+    const genero = document.getElementById("id_genero").value;
+    const pesoSelect = document.getElementById("id_peso");
+    if (!pesoSelect) return;
+    pesoSelect.innerHTML = "";
+    if (categoria && genero && CATEGORIAS_COMBATE[categoria] && CATEGORIAS_COMBATE[categoria][genero]) {
+      CATEGORIAS_COMBATE[categoria][genero].forEach(peso => {
+        let option = document.createElement('option');
+        option.value = peso;
+        option.text = peso;
+        if ("{{ form.peso.value }}" == peso) {
+          option.selected = true; // Selecciona el peso guardado
+        }
+        pesoSelect.add(option);
+      });
+    } else {
+      let option = document.createElement('option');
+      option.value = '';
+      option.text = 'Seleccione primero categoría y género';
+      pesoSelect.add(option);
+    }
+  }
+  document.getElementById("id_categoria").addEventListener("change", updatePesos);
+  document.getElementById("id_genero").addEventListener("change", updatePesos);
+  document.addEventListener('DOMContentLoaded', updatePesos); // Actualiza al cargar
+  {% endif %}
+</script>
 {% endblock %}

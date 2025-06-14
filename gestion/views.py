@@ -36,6 +36,8 @@ def inscribir_atleta(request):
             atleta.entrenador = entrenador  # siempre asigna el entrenador logueado
             atleta.save()
             return redirect('inscripcion_exitosa')
+        else:
+            print("ERRORES DEL FORMULARIO:", form.errors)   # <-- AGREGA ESTO PARA DEBUG
     else:
         form = AtletaForm()
     # Pasa entrenador para mostrarlo en la plantilla
