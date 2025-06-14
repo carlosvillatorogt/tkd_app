@@ -213,4 +213,4 @@ def ver_torneos(request):
     # Aquí luego puedes mostrar la lista de torneos
     return render(request, 'ver_torneos.html')
 
-# esto es una prueba de GIT
+
