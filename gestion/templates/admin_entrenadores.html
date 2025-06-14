@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Administrar Entrenadores{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-10 col-lg-11">
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <h2 class="mb-3 text-center">Panel de Administración de Entrenadores</h2>
+
+                <!-- Buscar entrenador -->
+                <form method="get" class="row g-2 mb-4">
+                    <div class="col-md-4">
+                        <input type="text" name="q" value="{{ request.GET.q }}" class="form-control"
+                            placeholder="Buscar por nombre o email">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-outline-primary">Buscar</button>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'admin_entrenadores' %}" class="btn btn-outline-secondary">Limpiar</a>
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nombre completo</th>
+                                <th>Email</th>
+                                <th>Gimnasio</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entrenador in entrenadores %}
+                            <tr>
+                                <td>{{ entrenador.nombre_completo }}</td>
+                                <td>{{ entrenador.usuario.email }}</td>
+                                <td>{{ entrenador.gimnasio }}</td>
+                                <td>
+                                    {% if entrenador.activo %}
+                                    <span class="badge bg-success">Activo</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Inactivo</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <a href="{% url 'editar_entrenador' entrenador.id %}"
+                                        class="btn btn-sm btn-outline-success me-1">Editar</a>
+                                    {% if entrenador.activo %}
+                                    <a href="{% url 'desactivar_entrenador' entrenador.id %}"
+                                        class="btn btn-sm btn-outline-warning me-1">Desactivar</a>
+                                    {% else %}
+                                    <a href="{% url 'activar_entrenador' entrenador.id %}"
+                                        class="btn btn-sm btn-outline-info me-1">Activar</a>
+                                    {% endif %}
+                                    <a href="{% url 'borrar_entrenador' entrenador.id %}"
+                                        class="btn btn-sm btn-outline-danger ms-1">Eliminar</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">No hay entrenadores registrados.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

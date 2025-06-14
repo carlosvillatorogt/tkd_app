@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel de Entrenador{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+        <div class="card shadow-sm mt-5">
+            <div class="card-body text-center">
+                <h2 class="mb-4 text-primary">¡Bienvenido! <br> {{ entrenador.nombre_completo }}</h2>
+                <p class="lead mb-4">
+                    Gimnasio: <strong>{{ entrenador.gimnasio }}</strong>
+                </p>
+                <p class="lead mb-4">
+                    Aquí podras gestionar tus Atletas, haz click en los botones según sea el caso
+                </p>
+                <div class="row justify-content-center g-3">
+                    <div class="col-md-6">
+                        <a href="{% url 'inscribir_atleta' %}" class="btn btn-outline-primary btn-lg w-100">
+                            Inscribir nuevo atleta
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'lista_atletas' %}" class="btn btn-outline-success btn-lg w-100">
+                            Ver mis atletas
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'inscribir_a_torneo' %}" class="btn btn-outline-warning btn-lg w-100">
+                            Inscribir atleta a torneo
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'ver_torneos' %}" class="btn btn-outline-info btn-lg w-100">
+                            Ver torneos disponibles
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

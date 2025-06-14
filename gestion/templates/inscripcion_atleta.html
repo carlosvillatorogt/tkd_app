@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Inscripción de Atleta{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm mt-5 mb-4">
+      <div class="card-body">
+        <h2 class="mb-4 text-center">Formulario de Inscripción de Atleta</h2>
+        {% if form.errors %}
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            {% for field in form %}
+            {% for error in field.errors %}
+            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        <form method="post" autocomplete="off">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="d-grid gap-2 mt-3">
+            <button class="btn btn-success btn-lg" type="submit">
+              Inscribir atleta
+            </button>
+          </div>
+          <div class="d-grid mt-4">
+            <a href="{% url 'panel_entrenador' %}" class="btn btn-outline-secondary btn-lg">
+              ⬅️ Volver al Panel de Entrenador
+            </a>
+          </div>     
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const CATEGORIAS_COMBATE = {{ categorias_json| safe }};
+  function updatePesos() {
+    const categoria = document.getElementById("id_categoria").value;
+    const genero = document.getElementById("id_genero").value;
+    const pesoSelect = document.getElementById("id_peso");
+    pesoSelect.innerHTML = "";
+    if (categoria && genero && CATEGORIAS_COMBATE[categoria] && CATEGORIAS_COMBATE[categoria][genero]) {
+      CATEGORIAS_COMBATE[categoria][genero].forEach(peso => {
+        let option = document.createElement('option');
+        option.value = peso;
+        option.text = peso;
+        pesoSelect.add(option);
+      });
+    } else {
+      let option = document.createElement('option');
+      option.value = '';
+      option.text = 'Seleccione primero categoría y género';
+      pesoSelect.add(option);
+    }
+  }
+  document.getElementById("id_categoria").addEventListener("change", updatePesos);
+  document.getElementById("id_genero").addEventListener("change", updatePesos);
+</script>
+{% endblock %}
+

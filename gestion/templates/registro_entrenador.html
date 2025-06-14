@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro de Entrenador{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <div class="card shadow-sm mt-5">
+      <div class="card-body">
+        <h2 class="mb-4 text-center">Registro de Nuevo Entrenador</h2>
+        <form method="post" autocomplete="off">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="d-grid gap-2 mt-3">
+            <button type="submit" class="btn btn-success btn-lg">Registrarse</button>
+          </div>
+        </form>
+        {% if form.errors %}
+        <div class="alert alert-danger mt-3 text-center">
+          Por favor corrige los campos marcados en rojo.
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

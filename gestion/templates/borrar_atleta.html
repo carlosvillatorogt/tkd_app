@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Borrar Atleta{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm mt-5 border-danger">
+      <div class="card-body text-center">
+        <h3 class="mb-4 text-danger">Borrar Atleta</h3>
+
+        <div class="mb-3">
+          <strong>Entrenador:</strong> {{ entrenador.nombre_completo }}<br />
+          <strong>Gimnasio:</strong> {{ entrenador.gimnasio }}
+        </div>
+
+        <p class="lead mb-4">
+          ¿Estás seguro que quieres borrar a<br>
+          <strong>{{ atleta.nombre_completo }}</strong>?
+        </p>
+
+        <form method="post" class="mb-3">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">
+            Sí, borrar
+          </button>
+          <a href="{% url 'lista_atletas' %}" class="btn btn-secondary ms-2">
+            Cancelar
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

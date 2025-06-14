@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel de Administración{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+        <div class="card shadow-sm mt-5">
+            <div class="card-body text-center">
+                <h2 class="mb-4 text-primary">¡Bienvenido, {{ user.get_full_name }}!</h2>
+                <p class="lead mb-4">
+                    Panel de administración general
+                </p>
+                <div class="row justify-content-center g-3">
+                    <div class="col-md-6">
+                        <a href="{% url 'admin_entrenadores' %}" class="btn btn-outline-primary btn-lg w-100">
+                            Gestionar entrenadores
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'torneos_list' %}" class="btn btn-outline-warning btn-lg w-100">
+                            Gestionar torneos
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'atletas_list' %}" class="btn btn-outline-success btn-lg w-100">
+                            Gestionar atletas
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'reportes' %}" class="btn btn-outline-info btn-lg w-100">
+                            Ver reportes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

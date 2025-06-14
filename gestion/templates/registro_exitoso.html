@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro exitoso{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <div class="card shadow-sm mt-5">
+      <div class="card-body text-center">
+        <h2 class="mb-3 text-success">¡Registro exitoso!</h2>
+        <p class="lead">
+          Por favor, revisa tu correo electrónico y haz clic en el enlace de activación para completar el registro.
+        </p>
+        <a href="{% url 'login' %}" class="btn btn-primary w-100 mt-4">
+          Ir a iniciar sesión
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

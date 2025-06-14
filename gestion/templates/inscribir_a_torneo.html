@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Inscribir Atleta a Torneo{% endblock %}
+
+{% block content %}
+<div class="card mx-auto shadow-sm" style="max-width: 500px;">
+  <div class="card-body">
+    <h3 class="card-title text-center mb-4">Inscribir Atleta a Torneo</h3>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="mb-3">
+      <strong>Entrenador:</strong> {{ entrenador.nombre_completo }}<br />
+      <strong>Gimnasio:</strong> {{ entrenador.gimnasio }}
+    </div>
+
+    <form method="post" autocomplete="off">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="atleta" class="form-label">Atleta</label>
+        <select name="atleta" id="atleta" class="form-select" required>
+          <option value="">Selecciona un atleta</option>
+          {% for atleta in atletas %}
+          <option value="{{ atleta.id }}">{{ atleta.nombre_completo }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="torneo" class="form-label">Torneo</label>
+        <select name="torneo" id="torneo" class="form-select" required>
+          <option value="">Selecciona un torneo</option>
+          {% for torneo in torneos %}
+          <option value="{{ torneo.id }}">{{ torneo.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Inscribir a Torneo</button>
+      </div>
+    </form>
+
+    <a href="{% url 'lista_atletas' %}" class="btn btn-secondary mt-4 w-100">
+      Volver a mis atletas
+    </a>
+  </div>
+</div>
+{% endblock %}
+
