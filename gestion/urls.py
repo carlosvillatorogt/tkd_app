@@ -19,5 +19,6 @@ urlpatterns = [
     path('panel-admin/', views.panel_admin, name='panel_admin'),
     path('admin/entrenadores/', views.admin_entrenadores, name='admin_entrenadores'),
     path('ver-torneos/', views.ver_torneos, name='ver_torneos'),
+    path('atletas-ranking/', views.atletas_ranking, name='atletas_ranking')
 
 ]

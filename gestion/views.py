@@ -215,4 +215,12 @@ def ver_torneos(request):
     # Aquí luego puedes mostrar la lista de torneos
     return render(request, 'ver_torneos.html')
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Atleta
+
+@login_required
+def atletas_ranking(request):
+    atletas = Atleta.objects.filter(puntos_ranking__gt=0).order_by('-puntos_ranking')
+    return render(request, 'atletas_ranking.html', {'atletas': atletas})
 
