@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4 d-flex justify-content-center">
+    <div class="bg-white rounded shadow p-4" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center mb-4">Registro de Maestro / Administrador</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                <div class="text-danger small">{{ field.errors|striptags }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success w-100">Registrarse</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p class="mb-0">¿Ya tienes una cuenta?</p>
+            <a href="{% url 'login' %}" class="text-decoration-none fw-bold">Inicia sesión aquí</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -224,3 +224,90 @@ def atletas_ranking(request):
     atletas = Atleta.objects.filter(puntos_ranking__gt=0).order_by('-puntos_ranking')
     return render(request, 'atletas_ranking.html', {'atletas': atletas})
 
+#View para Maestros/Administradores
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from gestion.forms import MaestroRegistroForm
+from gestion.models import Maestro
+
+def registro_maestro(request):
+    if request.method == 'POST':
+        form = MaestroRegistroForm(request.POST)
+        if form.is_valid():
+            # Crear usuario Django
+            user = User.objects.create_user(
+                username=form.cleaned_data['email'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                is_active=True
+            )
+
+            # Crear objeto Maestro vinculado
+            Maestro.objects.create(
+                user=user,
+                nombre_completo=form.cleaned_data['nombre_completo'],
+                email=form.cleaned_data['email'],
+                cui=form.cleaned_data['cui'],
+                telefono=form.cleaned_data['telefono'],
+                aprobado=False  # Tú lo aprobarás manualmente
+            )
+
+            #return redirect('registro_exitoso')  # Puedes cambiar esto por una página de confirmación
+            return redirect('registro_exitoso_maestro')
+
+    else:
+        form = MaestroRegistroForm()
+
+    return render(request, 'registro_maestro.html', {'form': form})
+
+#Login Maestro/Administrador
+
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from gestion.models import Maestro
+
+def login_maestro(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            try:
+                maestro = user.maestro
+                if maestro.aprobado:
+                    login(request, user)
+                    return redirect('panel_maestro')
+                else:
+                    messages.error(request, 'Tu cuenta aún no ha sido aprobada por el administrador.')
+            except Maestro.DoesNotExist:
+                messages.error(request, 'Este usuario no tiene acceso como Maestro.')
+        else:
+            messages.error(request, 'Credenciales incorrectas.')
+
+    return render(request, 'login_maestro.html')
+
+#Vista de Panel de Maestro /Administrador
+
+from django.http import HttpResponseForbidden
+
+def maestro_aprobado_required(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        if hasattr(request.user, 'maestro') and request.user.maestro.aprobado:
+            return view_func(request, *args, **kwargs)
+        return HttpResponseForbidden("Acceso denegado. Tu cuenta no está aprobada.")
+    return _wrapped_view
+
+@login_required
+@maestro_aprobado_required
+def panel_maestro(request):
+    return render(request, 'panel_maestro.html')
+
+#Registro Exitoro para Maestros/Administradores
+
+def registro_exitoso_maestro(request):
+    return render(request, 'registro_exitoso_maestro.html')
+

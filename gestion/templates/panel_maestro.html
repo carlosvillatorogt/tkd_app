@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="bg-white p-4 rounded shadow">
+        <h2 class="text-center">Panel del Maestro</h2>
+        <p class="text-center">Bienvenido, {{ request.user.maestro.nombre_completo }}.</p>
+        <hr>
+        <p>Aquí podrás crear torneos, generar llaves, ver inscritos y más.</p>
+    </div>
+</div>
+{% endblock %}

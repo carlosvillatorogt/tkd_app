@@ -19,6 +19,10 @@ urlpatterns = [
     path('panel-admin/', views.panel_admin, name='panel_admin'),
     path('admin/entrenadores/', views.admin_entrenadores, name='admin_entrenadores'),
     path('ver-torneos/', views.ver_torneos, name='ver_torneos'),
-    path('atletas-ranking/', views.atletas_ranking, name='atletas_ranking')
+    path('atletas-ranking/', views.atletas_ranking, name='atletas_ranking'),
+    path('registro-maestro/', views.registro_maestro, name='registro_maestro'),
+    path('login-maestro/', views.login_maestro, name='login_maestro'),
+    path('panel-maestro/', views.panel_maestro, name='panel_maestro'),
+    path('registro-exitoso-maestro/', views.registro_exitoso_maestro, name='registro_exitoso_maestro'),
 
 ]

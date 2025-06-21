@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4 d-flex justify-content-center">
+    <div class="bg-white p-4 rounded shadow text-center" style="max-width: 500px; width: 100%;">
+        <h2 class="mb-3 text-success">¡Registro enviado con éxito!</h2>
+        <p>Gracias por registrarte como Maestro.</p>
+        <p>Tu cuenta será revisada por el administrador. Recibirás acceso una vez sea aprobada.</p>
+        <a href="{% url 'login_maestro' %}" class="btn btn-success mt-3">Ir al login de Maestro</a>
+    </div>
+</div>
+{% endblock %}

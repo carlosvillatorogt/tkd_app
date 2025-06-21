@@ -128,3 +128,35 @@ class RegistroEntrenadorForm(forms.ModelForm):
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError("Ya existe un usuario con ese nombre de usuario.")
         return username
+
+# Forms de Maestro/Administrador
+
+from django import forms
+from django.contrib.auth.models import User
+from gestion.models import Maestro
+
+class MaestroRegistroForm(forms.Form):
+    nombre_completo = forms.CharField(max_length=100, label="Nombre completo")
+    email = forms.EmailField(label="Correo electrónico")
+    cui = forms.CharField(max_length=20, label="DPI o CUI")
+    telefono = forms.CharField(max_length=15, required=False, label="Teléfono")
+    password = forms.CharField(widget=forms.PasswordInput, label="Contraseña")
+    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirmar contraseña")
+    clave_secreta = forms.CharField(widget=forms.PasswordInput, label="Clave de acceso")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password2 = cleaned_data.get("password2")
+        clave = cleaned_data.get("clave_secreta")
+
+        if password != password2:
+            raise forms.ValidationError("Las contraseñas no coinciden.")
+
+        # Aquí defines la clave que tú vas a compartir
+        CLAVE_CORRECTA = "ACCESO2025"
+
+        if clave != CLAVE_CORRECTA:
+            raise forms.ValidationError("Clave de acceso inválida. Consulta con el administrador.")
+
+        return cleaned_data

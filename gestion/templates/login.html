@@ -1,27 +1,28 @@
 {% extends 'base.html' %}
 
-{% block title %}Iniciar sesión{% endblock %}
-
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6 col-lg-5">
-    <div class="card shadow-sm mt-5">
-      <div class="card-body">
-        <h2 class="mb-4 text-center">Login de Entrenador</h2>
-        <form method="post" autocomplete="off">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <div class="d-grid gap-2 mt-3">
-            <button type="submit" class="btn btn-primary btn-lg">Ingresar</button>
-          </div>
-        </form>
-        {% if form.errors %}
-        <div class="alert alert-danger mt-3 text-center">
-          Usuario o contraseña incorrectos.
-        </div>
+<div class="container py-4 d-flex justify-content-center">
+  <div class="bg-white rounded shadow p-4" style="max-width: 400px; width: 100%;">
+    <h2 class="text-center mb-4">Inicio de Sesión</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="mb-3">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+        <div class="text-danger small">{{ field.errors|striptags }}</div>
         {% endif %}
       </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+    </form>
+
+    <div class="text-center mt-3">
+      <p class="mb-0">¿No tienes cuenta?</p>
+      <a href="{% url 'registro_entrenador' %}" class="text-decoration-none fw-bold">Registrarse como entrenador</a>
     </div>
   </div>
 </div>
 {% endblock %}
+
