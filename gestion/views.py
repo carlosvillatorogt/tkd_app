@@ -311,3 +311,37 @@ def panel_maestro(request):
 def registro_exitoso_maestro(request):
     return render(request, 'registro_exitoso_maestro.html')
 
+#Vista para crear torneo
+
+@login_required
+@maestro_aprobado_required
+def crear_torneo(request):
+    return render(request, 'crear_torneo.html')
+
+#Vista para ver Atletas
+
+@login_required
+@maestro_aprobado_required
+def ver_atletas(request):
+    return render(request, 'ver_atletas.html')
+
+# Generar Llaves
+
+@login_required
+@maestro_aprobado_required
+def generar_llaves(request):
+    return render(request, 'generar_llaves.html')
+
+# Ver Combates
+
+@login_required
+@maestro_aprobado_required
+def ver_combates(request):
+    return render(request, 'ver_combates.html')
+
+# Ver Rankings
+
+@login_required
+@maestro_aprobado_required
+def ver_rankings(request):
+    return render(request, 'ver_rankings.html')

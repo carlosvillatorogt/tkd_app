@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="bg-white p-4 rounded shadow">
+        <h2 class="text-center">Ranking y Resultados</h2>
+        <p class="text-center">Aquí se visualizarán los puntos de ranking y resultados acumulados de los atletas.</p>
+        <div class="text-center mt-3">
+            <a href="{% url 'panel_maestro' %}" class="btn btn-secondary">🔙 Regresar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

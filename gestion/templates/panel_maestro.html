@@ -3,10 +3,42 @@
 {% block content %}
 <div class="container py-4">
     <div class="bg-white p-4 rounded shadow">
-        <h2 class="text-center">Panel del Maestro</h2>
+        <h2 class="text-center mb-4">Panel del Maestro</h2>
         <p class="text-center">Bienvenido, {{ request.user.maestro.nombre_completo }}.</p>
         <hr>
-        <p>Aquí podrás crear torneos, generar llaves, ver inscritos y más.</p>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <a href="{% url 'crear_torneo' %}" class="btn btn-outline-primary w-100">
+                    🏆 Crear Torneo
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="{% url 'ver_atletas' %}" class="btn btn-outline-primary w-100">
+                    👥 Ver Atletas Inscritos
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="{% url 'generar_llaves' %}" class="btn btn-outline-primary w-100">
+                    🎯 Generar Llaves de Combate
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="{% url 'ver_combates' %}" class="btn btn-outline-primary w-100">
+                    ⚔️ Ver Combates del Torneo
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="{% url 'ver_rankings' %}" class="btn btn-outline-primary w-100">
+                    📊 Ver Rankings / Resultados
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="{% url 'panel_maestro' %}" class="btn btn-outline-secondary w-100">
+                    🔙 Regresar al Panel Principal
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

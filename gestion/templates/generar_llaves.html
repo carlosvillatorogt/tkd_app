@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="bg-white p-4 rounded shadow">
+        <h2 class="text-center">Generar Llaves de Combate</h2>
+        <p class="text-center">Aquí se generarán las llaves de combate para los torneos.</p>
+        <div class="text-center mt-3">
+            <a href="{% url 'panel_maestro' %}" class="btn btn-secondary">🔙 Regresar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
